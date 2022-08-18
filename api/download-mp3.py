@@ -10,35 +10,8 @@ class handler(BaseHTTPRequestHandler):
   def do_POST(self):
     content_len = int(self.headers.get('Content-Length'))
     post_body = self.rfile.read(content_len)
-
-    if not post_body:
-      self.send_response(400)
-      self.send_header('Content-type','application/json')
-      self.end_headers()
-
-      response_obj = {
-        "message": "Propriedade 'link' é obrigatória"
-      }
-      json_response = dumps(response_obj)
-
-      self.wfile.write(json_response.encode(encoding='utf_8'))
-      return
-
     body_obj = loads(post_body)
     video_link = body_obj.get("link")
-
-    if not video_link:
-      self.send_response(400)
-      self.send_header('Content-type','application/json')
-      self.end_headers()
-
-      response_obj = {
-        "message": "Propriedade 'link' é obrigatória"
-      }
-      json_response = dumps(response_obj)
-
-      self.wfile.write(json_response.encode(encoding='utf_8'))
-      return
 
     try:
       yt = YouTube(video_link)
