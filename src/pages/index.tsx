@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -76,95 +77,100 @@ const Home: NextPage = () => {
   }
 
   return (
-    <Flex
-      alignItems="center"
-      maxWidth="780px"
-      w="100%"
-      mx="auto"
-      h="100vh"
-      px="4"
-    >
-      <Box
-        as="main"
+    <>
+      <Head>
+        <title>PyNextTube | Download your favorite videos as MP3</title>
+      </Head>
+      <Flex
+        alignItems="center"
+        maxWidth="780px"
         w="100%"
-        bgColor="gray.700"
-        p={{ base: '5', md: '8' }}
-        borderRadius="md"
+        mx="auto"
+        h="100vh"
+        px="4"
       >
-        <Flex as="header" mx="auto" width="fit-content">
-          <Heading
-            size={{ base: 'lg', sm: 'xl', md: '2xl' }}
-            color="yellow.500"
-          >
-            Py
-          </Heading>
-          <Heading size={{ base: 'lg', sm: 'xl', md: '2xl' }} color="black">
-            Next
-          </Heading>
-          <Heading size={{ base: 'lg', sm: 'xl', md: '2xl' }} color="red.500">
-            Tube
-          </Heading>
-        </Flex>
-
-        <Flex
-          onSubmit={handleSubmit(onFormSubmit)}
-          as="form"
-          mt="10"
-          flexDir="column"
-          alignItems="flex-start"
-          gap="8"
+        <Box
+          as="main"
+          w="100%"
+          bgColor="gray.700"
+          p={{ base: '5', md: '8' }}
+          borderRadius="md"
         >
-          <FormControl isInvalid={!!errors.name}>
-            <FormLabel>Nome do arquivo: </FormLabel>
+          <Flex as="header" mx="auto" width="fit-content">
+            <Heading
+              size={{ base: 'lg', sm: 'xl', md: '2xl' }}
+              color="yellow.500"
+            >
+              Py
+            </Heading>
+            <Heading size={{ base: 'lg', sm: 'xl', md: '2xl' }} color="black">
+              Next
+            </Heading>
+            <Heading size={{ base: 'lg', sm: 'xl', md: '2xl' }} color="red.500">
+              Tube
+            </Heading>
+          </Flex>
 
-            <Input
-              {...register('name')}
-              _placeholder={{
-                color: 'gray.400',
-              }}
-              variant="flushed"
-              focusBorderColor="purple.500"
-              placeholder="Música tal"
-            />
-
-            {!!errors.name && (
-              <FormErrorMessage fontSize="lg" fontWeight="semibold">
-                {errors.name.message}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-
-          <FormControl isInvalid={!!errors.link}>
-            <FormLabel>Url do vídeo: </FormLabel>
-
-            <Input
-              {...register('link')}
-              _placeholder={{
-                color: 'gray.400',
-              }}
-              variant="flushed"
-              focusBorderColor="purple.500"
-              placeholder="https://youtube.com/watch?v="
-            />
-
-            {!!errors.link && (
-              <FormErrorMessage fontSize="lg" fontWeight="semibold">
-                {errors.link.message}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-
-          <Button
-            w={{ base: '100%', sm: 'fit-content' }}
-            type="submit"
-            colorScheme="purple"
-            isLoading={isSubmitting || isLoading}
+          <Flex
+            onSubmit={handleSubmit(onFormSubmit)}
+            as="form"
+            mt="10"
+            flexDir="column"
+            alignItems="flex-start"
+            gap="8"
           >
-            Download
-          </Button>
-        </Flex>
-      </Box>
-    </Flex>
+            <FormControl isInvalid={!!errors.name}>
+              <FormLabel>Nome do arquivo: </FormLabel>
+
+              <Input
+                {...register('name')}
+                _placeholder={{
+                  color: 'gray.400',
+                }}
+                variant="flushed"
+                focusBorderColor="purple.500"
+                placeholder="Música tal"
+              />
+
+              {!!errors.name && (
+                <FormErrorMessage fontSize="lg" fontWeight="semibold">
+                  {errors.name.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <FormControl isInvalid={!!errors.link}>
+              <FormLabel>Url do vídeo: </FormLabel>
+
+              <Input
+                {...register('link')}
+                _placeholder={{
+                  color: 'gray.400',
+                }}
+                variant="flushed"
+                focusBorderColor="purple.500"
+                placeholder="https://youtube.com/watch?v="
+              />
+
+              {!!errors.link && (
+                <FormErrorMessage fontSize="lg" fontWeight="semibold">
+                  {errors.link.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+
+            <Button
+              w={{ base: '100%', sm: 'fit-content' }}
+              type="submit"
+              colorScheme="purple"
+              isLoading={isSubmitting || isLoading}
+            >
+              Download
+            </Button>
+          </Flex>
+        </Box>
+      </Flex>
+    </>
   )
 }
 
