@@ -1,5 +1,4 @@
 from http.server import BaseHTTPRequestHandler
-from cowpy import cow
 from pytube import YouTube
 import moviepy.editor as mp
 import json
