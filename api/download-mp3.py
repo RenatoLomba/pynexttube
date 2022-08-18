@@ -56,7 +56,7 @@ class handler(BaseHTTPRequestHandler):
       return
 
     dir_path = "./"
-    ys = yt.streams.filter(only_audio=True).first().download(dir_path)
+    yt.streams.filter(only_audio=True).first().download(dir_path)
 
     for file in listdir(dir_path):
       if search('mp4', file):
