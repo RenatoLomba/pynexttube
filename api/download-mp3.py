@@ -18,7 +18,7 @@ class handler(BaseHTTPRequestHandler):
       self.end_headers()
 
       response_obj = {
-        "message": "Must provide query link."
+        "message": "Must provide body with link to youtube video"
       }
       json_response = json.dumps(response_obj)
 
@@ -35,7 +35,7 @@ class handler(BaseHTTPRequestHandler):
       self.end_headers()
 
       response_obj = {
-        "message": "Must provide query link."
+        "message": "Must provide body with link to youtube video"
       }
       json_response = json.dumps(response_obj)
 
