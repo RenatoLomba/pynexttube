@@ -42,7 +42,21 @@ class handler(BaseHTTPRequestHandler):
       self.wfile.write(json_response.encode(encoding='utf_8'))
       return
 
-    yt = YouTube(video_link)
+    try:
+      yt = YouTube(video_link)
+    except:
+      self.send_response(400)
+      self.send_header('Content-type','application/json')
+      self.end_headers()
+
+      response_obj = {
+        "message": "Invalid youtube video link."
+      }
+      json_response = json.dumps(response_obj)
+
+      self.wfile.write(json_response.encode(encoding='utf_8'))
+      return
+
     path = "./"
 
     # Begin download #
