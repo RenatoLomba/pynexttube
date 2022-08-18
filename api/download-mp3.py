@@ -1,14 +1,13 @@
 from http.server import BaseHTTPRequestHandler
 from pytube import YouTube
-import moviepy.editor as mp
-import json
-import re
-import os
-import shutil
+from shutil import copyfileobj
+from moviepy import editor as mp
+from json import dumps, loads
+from re import search
+from os import listdir, path, fstat, remove
 
 class handler(BaseHTTPRequestHandler):
   def do_POST(self):
-    # Reading request body
     content_len = int(self.headers.get('Content-Length'))
     post_body = self.rfile.read(content_len)
 
@@ -20,13 +19,12 @@ class handler(BaseHTTPRequestHandler):
       response_obj = {
         "message": "Propriedade 'link' é obrigatória"
       }
-      json_response = json.dumps(response_obj)
+      json_response = dumps(response_obj)
 
       self.wfile.write(json_response.encode(encoding='utf_8'))
       return
 
-    # Reading property link from body
-    body_obj = json.loads(post_body)
+    body_obj = loads(post_body)
     video_link = body_obj.get("link")
 
     if not video_link:
@@ -37,7 +35,7 @@ class handler(BaseHTTPRequestHandler):
       response_obj = {
         "message": "Propriedade 'link' é obrigatória"
       }
-      json_response = json.dumps(response_obj)
+      json_response = dumps(response_obj)
 
       self.wfile.write(json_response.encode(encoding='utf_8'))
       return
@@ -52,36 +50,28 @@ class handler(BaseHTTPRequestHandler):
       response_obj = {
         "message": "Link de vídeo do YouTube inválido."
       }
-      json_response = json.dumps(response_obj)
+      json_response = dumps(response_obj)
 
       self.wfile.write(json_response.encode(encoding='utf_8'))
       return
 
-    path = "./"
+    dir_path = "./"
+    ys = yt.streams.filter(only_audio=True).first().download(dir_path)
 
-    # Begin download #
-    print("Downloading...")
-    ys = yt.streams.filter(only_audio=True).first().download(path)
-    print("Download complete!")
-    print(ys)
-
-    # Convert mp4 to mp3 #
-    print("Converting file...")
-    for file in os.listdir(path):
-      if re.search('mp4', file):
-        mp4_path = os.path.join(path, file)
-        mp3_path = os.path.join(path, os.path.splitext(file)[0] + '.mp3')
+    for file in listdir(dir_path):
+      if search('mp4', file):
+        mp4_path = path.join(dir_path, file)
+        mp3_path = path.join(dir_path, path.splitext(file)[0] + '.mp3')
         new_file = mp.AudioFileClip(mp4_path)
         new_file.write_audiofile(mp3_path)
-        os.remove(mp4_path)
-    print("Success!")
+        remove(mp4_path)
 
     with open(mp3_path, 'rb') as f:
       self.send_response(200)
       self.send_header("Content-Type", 'application/octet-stream')
-      self.send_header("Content-Disposition", 'attachment; filename="{}"'.format(os.path.basename(mp3_path)))
-      fs = os.fstat(f.fileno())
+      self.send_header("Content-Disposition", 'attachment; filename="{}"'.format(path.basename(mp3_path)))
+      fs = fstat(f.fileno())
       self.send_header("Content-Length", str(fs.st_size))
       self.end_headers()
-      shutil.copyfileobj(f, self.wfile)
+      copyfileobj(f, self.wfile)
       return
