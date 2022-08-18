@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app'
 
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 const theme = extendTheme({
   styles: {
@@ -9,26 +10,25 @@ const theme = extendTheme({
         background: 'gray.900',
         color: 'gray.100',
         lineHeight: 'tall',
-        fontSize: '2xl',
-
-        '@media screen and (max-width: 480px)': {
-          fontSize: 'lg',
-        },
+        fontSize: 'lg',
       },
 
       '::selection': {
         color: 'white',
         background: 'purple.500',
-        '-webkit-text-stroke': '0',
       },
     },
   },
 })
 
+const queryClient = new QueryClient()
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </ChakraProvider>
   )
 }

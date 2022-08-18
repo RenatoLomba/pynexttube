@@ -18,7 +18,7 @@ class handler(BaseHTTPRequestHandler):
       self.end_headers()
 
       response_obj = {
-        "message": "Must provide body with link to youtube video"
+        "message": "Propriedade 'link' é obrigatória"
       }
       json_response = json.dumps(response_obj)
 
@@ -35,7 +35,7 @@ class handler(BaseHTTPRequestHandler):
       self.end_headers()
 
       response_obj = {
-        "message": "Must provide body with link to youtube video"
+        "message": "Propriedade 'link' é obrigatória"
       }
       json_response = json.dumps(response_obj)
 
@@ -50,7 +50,7 @@ class handler(BaseHTTPRequestHandler):
       self.end_headers()
 
       response_obj = {
-        "message": "Invalid youtube video link."
+        "message": "Link de vídeo do YouTube inválido."
       }
       json_response = json.dumps(response_obj)
 
